@@ -1,0 +1,3 @@
+﻿export interface Product { id:string; name:string; sku:string; category:string; price:number; stock:number; reorderLevel:number; warehouse:string; status?:string }
+export interface Order { id:string; customer:string; date:string; items:number; total:number; status:string; initials?:string; color?:string }
+export interface Dashboard { totalProducts:number; stockValue:number; totalOrders:number; revenue:number; lowStockCount:number; outOfStockCount:number; products:Product[]; orders:Order[]; sales:number[]; salesLabels:string[]; categories:{name:string;value:number;color:string}[]; movements:{title:string;subtitle:string;time:string;quantity:string;kind:string}[] }

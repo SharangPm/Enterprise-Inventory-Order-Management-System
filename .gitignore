@@ -1,0 +1,10 @@
+node_modules/
+frontend/dist/
+frontend/.env
+backend/**/bin/
+backend/**/obj/
+.env
+.vs/
+.idea/
+*.user
+*.tsbuildinfo

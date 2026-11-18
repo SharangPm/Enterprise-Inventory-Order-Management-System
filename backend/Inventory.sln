@@ -1,0 +1,32 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.API", "Inventory.API\Inventory.API.csproj", "{BFEBEFBA-1749-489F-9813-BC99E8AF1011}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Application", "Inventory.Application\Inventory.Application.csproj", "{CFEBEFBA-1749-489F-9813-BC99E8AF1012}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Domain", "Inventory.Domain\Inventory.Domain.csproj", "{DFEBEFBA-1749-489F-9813-BC99E8AF1013}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Infrastructure", "Inventory.Infrastructure\Inventory.Infrastructure.csproj", "{EFEBEFBA-1749-489F-9813-BC99E8AF1014}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.Tests", "Inventory.Tests\Inventory.Tests.csproj", "{AFEBEFBA-1749-489F-9813-BC99E8AF1015}"
+EndProject
+Global
+ GlobalSection(SolutionConfigurationPlatforms) = preSolution
+ Debug|Any CPU = Debug|Any CPU
+ Release|Any CPU = Release|Any CPU
+ EndGlobalSection
+ GlobalSection(ProjectConfigurationPlatforms) = postSolution
+ {BFEBEFBA-1749-489F-9813-BC99E8AF1011}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+ {BFEBEFBA-1749-489F-9813-BC99E8AF1011}.Debug|Any CPU.Build.0 = Debug|Any CPU
+ {CFEBEFBA-1749-489F-9813-BC99E8AF1012}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+ {CFEBEFBA-1749-489F-9813-BC99E8AF1012}.Debug|Any CPU.Build.0 = Debug|Any CPU
+ {DFEBEFBA-1749-489F-9813-BC99E8AF1013}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+ {DFEBEFBA-1749-489F-9813-BC99E8AF1013}.Debug|Any CPU.Build.0 = Debug|Any CPU
+ {EFEBEFBA-1749-489F-9813-BC99E8AF1014}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+ {EFEBEFBA-1749-489F-9813-BC99E8AF1014}.Debug|Any CPU.Build.0 = Debug|Any CPU
+ {AFEBEFBA-1749-489F-9813-BC99E8AF1015}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+ {AFEBEFBA-1749-489F-9813-BC99E8AF1015}.Debug|Any CPU.Build.0 = Debug|Any CPU
+ EndGlobalSection
+EndGlobal

@@ -1,0 +1,68 @@
+trigger:
+  branches:
+    include: [main]
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: BuildAndTest
+    jobs:
+      - job: Verify
+        steps:
+          - task: UseDotNet@2
+            inputs:
+              packageType: sdk
+              version: 8.x
+          - task: NodeTool@0
+            inputs:
+              versionSpec: 22.x
+          - script: dotnet restore backend/Inventory.sln
+            displayName: Restore .NET solution
+          - script: dotnet build backend/Inventory.sln --configuration Release --no-restore
+            displayName: Build .NET solution
+          - script: npm ci && npm run build
+            workingDirectory: frontend
+            displayName: Build Vue frontend
+          - script: docker compose build api frontend
+            displayName: Build application containers
+          - script: docker compose --profile test run --build --rm backend-tests
+            displayName: Run unit and API integration tests
+          - script: docker compose down --remove-orphans
+            displayName: Stop test services
+            condition: always()
+  - stage: Deploy
+    dependsOn: BuildAndTest
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: DeployApplication
+        environment: production
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureCLI@2
+                  displayName: Build, publish, and update Azure Container Apps
+                  inputs:
+                    azureSubscription: $(azureServiceConnection)
+                    scriptType: bash
+                    scriptLocation: inlineScript
+                    inlineScript: |
+                      set -euo pipefail
+                      tag="$(Build.BuildId)"
+                      registry="$(containerRegistry)"
+                      az acr login --name "${registry%%.*}"
+                      docker build -t "$registry/nexstock-api:$tag" -f backend/Inventory.API/Dockerfile backend
+                      docker build -t "$registry/nexstock-web:$tag" \
+                        --build-arg VITE_API_URL="$(apiBaseUrl)/api" \
+                        --build-arg VITE_SIGNALR_URL="$(apiBaseUrl)/hubs/notifications" frontend
+                      docker push "$registry/nexstock-api:$tag"
+                      docker push "$registry/nexstock-web:$tag"
+                      az containerapp secret set --name "$(apiContainerApp)" --resource-group "$(azureResourceGroup)" \
+                        --secrets mongodb="$(mongoConnectionString)" jwt="$(jwtKey)"
+                      az containerapp update --name "$(apiContainerApp)" --resource-group "$(azureResourceGroup)" \
+                        --image "$registry/nexstock-api:$tag" \
+                        --set-env-vars Mongo__ConnectionString=secretref:mongodb Mongo__Database=nexstock \
+                        Jwt__Key=secretref:jwt Frontend__Origin="$(frontendOrigin)"
+                      az containerapp update --name "$(webContainerApp)" --resource-group "$(azureResourceGroup)" \
+                        --image "$registry/nexstock-web:$tag"
